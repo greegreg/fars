@@ -1,4 +1,3 @@
-
 #'Read data from a file
 #'
 #'This function extracts data from the users current work directory for data in csv format.
