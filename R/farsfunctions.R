@@ -53,7 +53,7 @@ dplyr::tbl_df(data)
 
 make_filename <- function(year) {
         year <- as.integer(year)
-        sprintf("data/accident_%d.csv.bz2", year)
+        sprintf("inst/extdata/accident_%d.csv.bz2", year)
 }
 
 #' Testing if a vector specified by the user has data available.

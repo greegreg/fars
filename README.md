@@ -12,6 +12,10 @@ The package fars requires the following packages to operate.
 Traffic Fatality Analysis
 -------------------------
 
+The path to data files that can be used in these functions can be created using
+
+system.file("extdata", "filename", package="fars"), where filename is one of "accident\_2013.csv.bz2", "accident\_2014.csv.bz2", or "accident\_2015.csv.bz2"
+
 Traffic fatalities are recorded by the US National Highway Traffic Safety Administration's Fatality Analysis Reporting System (NHTSA). This package extracts data for the years 2013, 2014, and 2015. The fatalities can be summarized in one of two ways, a table for each month of each year or in a map of a specific state.
 
 The function fars\_summarize\_years uses the traffic fatality data set and summarizes the data in that set.
