@@ -1,4 +1,8 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+### Status
+
+[![Build Status](https://travis-ci.org/greegreg/fars.svg?branch=master)](https://travis-ci.org/greegreg/fars)
+
 Traffic Fatality Analysis
 -------------------------
 
