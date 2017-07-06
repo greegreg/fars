@@ -2,7 +2,7 @@
 % Please edit documentation in R/farsfunctions.R
 \name{make_filename}
 \alias{make_filename}
-\title{Make a filename to read data for a specific year.}
+\title{Create a date specific file name.}
 \source{
 US National Highway Traffic Safety Administration's Fatality Analysis Reporting System
 }
@@ -10,18 +10,15 @@ US National Highway Traffic Safety Administration's Fatality Analysis Reporting 
 make_filename(year)
 }
 \arguments{
-\item{year}{An integer or an object that can be coerced to an integer.}
+\item{year}{An integer or an object that can be coerced to an integer. Should be 2013, 2014, or 2015.}
 }
 \value{
-This function returns a filename defining the file extension of the National
- Highway data available for extraction.
+This function returns a character string representing a file extension for the National
+ Highway data available for extraction. The character string is then sent to the fars_read function.
 }
 \description{
 The function takes a single argment, which is a year defining a time period when data
 from the US National Highway Traffic Safety Administration's Fatality Analysis Reporting System
-is available for this function.
-}
-\examples{
-\dontrun{make_filename(2013)
-make_filename(2014)}
+is available for this function. This function is not used directly by the user, it is called from the
+fars_read_years and fars_map_state functions.
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/farsfunctions.R
 \name{fars_read_years}
 \alias{fars_read_years}
-\title{Testing if a vector specified by the user has data available.}
+\title{Does a specific file exist}
 \source{
 US National Highway Traffic Safety Administration's Fatality Analysis Reporting System
 }
@@ -10,7 +10,8 @@ US National Highway Traffic Safety Administration's Fatality Analysis Reporting 
 fars_read_years(years)
 }
 \arguments{
-\item{years}{is a numerical vector, or a vector that can be coerced to numerical, of years}
+\item{years}{a numerical vector of years, or a vector that can be coerced into a numerical vector. The years
+when data are available include 2013, 2014, and 2015.}
 }
 \value{
 This function returns a list. Each element of the list contains the months and year that data is available.
@@ -18,14 +19,13 @@ If a year is not available an error is returned.
 }
 \description{
 This function determines if data is available in the US National Highway Traffic Safety
-Administration's Fatality Analysis Reporting System for the a years specified by the user.
+Administration's Fatality Analysis Reporting System for the a years specified by the user. If the file is
+available then this function reads the data in and begins creating a data frame with Month and year in the
+columns. If the year is not a year where data is available then an error will be sent to the screen indicating
+that data is not available. This function will not be called directly by the user. It is called by
+fars_summarize_years.
 }
 \details{
 An error will be generated if a year is given and no data is available for that year. This
-allows the used to be aware of the years when data is available to this package.
-}
-\examples{
-\dontrun{fars_read_years(2013)
-fars_read_years(c(2013,2014))
-fars_read_years(c(2013,2014,2015))}
+allows the user to be aware of the years when data is available to this package.
 }

@@ -2,30 +2,29 @@
 % Please edit documentation in R/farsfunctions.R
 \name{fars_read}
 \alias{fars_read}
-\title{Read data from a file}
+\title{File extraction}
 \source{
-US National Highway Traffic Safety Administration's Fatality Analysis Reporting System
+Data is found at the US National Highway Traffic Safety Administration's Fatality Analysis Reporting System
 }
 \usage{
 fars_read(filename)
 }
 \arguments{
-\item{filename}{A character string providing the location of the file to be read.}
+\item{filename}{A character string providing the file location of the US National Highway Safety
+Administration's Fatality Analysis Reporting System data. The filename is constructed in the
+make_filename function, so this parameter should never have to be input direclty.}
 }
 \value{
-The function returns a tbl_df, tbl, data.frame object.
+The function returns a tbl_df, tbl, data.frame object ready for manipulation.
 }
 \description{
-This function extracts data from the users current work directory for data in csv format.
-The user must provide file location which is
-the only agrument of this function. The data is extracted using the readr package.
+This function extracts data, in csv format, from the users current work directory.
+This function is called by the fars_read_years and fars_map_state functions. It is not called
+on its own. This file is not exported to the user.  Data is extracted using the readr package.
 Once the data is read into R the dplyr package alters the look of the data frame
 using the tbl_df function.
 }
 \details{
 an error will be thrown if the filename does not exist, or is not in the
-current working directory.
-}
-\examples{
-\dontrun{fars_read("accident_2013.csv.bz2")}
+       current working directory telling the user the file does not exist.
 }

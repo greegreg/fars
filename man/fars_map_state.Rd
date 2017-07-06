@@ -2,7 +2,7 @@
 % Please edit documentation in R/farsfunctions.R
 \name{fars_map_state}
 \alias{fars_map_state}
-\title{Creates a picture of a state and where an auto accident occurred}
+\title{Map of state specific accidents}
 \source{
 US National Highway Traffic Safety Administration's Fatality Analysis Reporting System
 }
@@ -10,9 +10,9 @@ US National Highway Traffic Safety Administration's Fatality Analysis Reporting 
 fars_map_state(state.num, year)
 }
 \arguments{
-\item{state.num}{a number between 1 adn 51, excluding 3, that identifies a US state.}
+\item{state.num}{a number between 1 and 51, excluding 3, that identifies a US state.}
 
-\item{year}{An integer or an object that can be coerced to an integer.}
+\item{year}{An integer or an object that can be coerced to an integer. Should be 2013, 2014, or 2015.}
 }
 \value{
 This function returns a picture of a state and a dot at each geographical location
@@ -20,7 +20,10 @@ This function returns a picture of a state and a dot at each geographical locati
 }
 \description{
 This function takes two inputs which are used to extract traffic fatality information
-for a given state and year and then draws a map showing the regions for the fatalities.
+for a given state and year. This information is used to place markers, indicated as points on a
+map, showing where a traffic fatality occured. If there were no fatalities in a state during a given
+year the function will generate an error stating there is no accident to plot. If you input an incorrect
+state number then an error will indicate there is no state for the given number.
 }
 \details{
 This function will throw and error if there is an invalled state given to the program.

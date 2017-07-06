@@ -1,26 +1,25 @@
-#'Read data from a file
+#'File extraction
 #'
-#'This function extracts data from the users current work directory for data in csv format.
-#'The user must provide file location which is
-#'the only agrument of this function. The data is extracted using the readr package.
+#'This function extracts data, in csv format, from the users current work directory.
+#'This function is called by the fars_read_years and fars_map_state functions. It is not called
+#'on its own. This file is not exported to the user.  Data is extracted using the readr package.
 #'Once the data is read into R the dplyr package alters the look of the data frame
 #'using the tbl_df function.
 #'
-#'@source US National Highway Traffic Safety Administration's Fatality Analysis Reporting System
+#'@source Data is found at the US National Highway Traffic Safety Administration's Fatality Analysis Reporting System
 #'
-#'@param filename A character string providing the location of the file to be read.
+#'@param filename A character string providing the file location of the US National Highway Safety
+#'         Administration's Fatality Analysis Reporting System data. The filename is constructed in the
+#'         make_filename function, so this parameter should never have to be input direclty.
 #'
 #'@importFrom readr read_csv
 #'
 #'@importFrom dplyr tbl_df
 #'
 #'@details an error will be thrown if the filename does not exist, or is not in the
-#'current working directory.
+#'        current working directory telling the user the file does not exist.
 #'
-#'@return The function returns a tbl_df, tbl, data.frame object.
-#'
-#'@examples
-#' \dontrun{fars_read("accident_2013.csv.bz2")}
+#'@return The function returns a tbl_df, tbl, data.frame object ready for manipulation.
 
 
 fars_read <- function(filename) {
@@ -33,22 +32,20 @@ dplyr::tbl_df(data)
 }
 
 
-#' Make a filename to read data for a specific year.
+#' Create a date specific file name.
 #'
 #' The function takes a single argment, which is a year defining a time period when data
 #' from the US National Highway Traffic Safety Administration's Fatality Analysis Reporting System
-#' is available for this function.
+#' is available for this function. This function is not used directly by the user, it is called from the
+#' fars_read_years and fars_map_state functions.
 #'
 #' @source US National Highway Traffic Safety Administration's Fatality Analysis Reporting System
 #'
-#' @param year An integer or an object that can be coerced to an integer.
+#' @inheritParams fars_map_state
 #'
-#' @return This function returns a filename defining the file extension of the National
-#'  Highway data available for extraction.
-#'
-#' @examples
-#' \dontrun{make_filename(2013)
-#' make_filename(2014)}
+#' @return This function returns a character string representing a file extension for the National
+#'  Highway data available for extraction. The character string is then sent to the fars_read function.
+
 
 
 make_filename <- function(year) {
@@ -56,27 +53,26 @@ make_filename <- function(year) {
         sprintf("inst/extdata/accident_%d.csv.bz2", year)
 }
 
-#' Testing if a vector specified by the user has data available.
+#' Does a specific file exist
 #'
 #' This function determines if data is available in the US National Highway Traffic Safety
-#' Administration's Fatality Analysis Reporting System for the a years specified by the user.
+#' Administration's Fatality Analysis Reporting System for the a years specified by the user. If the file is
+#' available then this function reads the data in and begins creating a data frame with Month and year in the
+#' columns. If the year is not a year where data is available then an error will be sent to the screen indicating
+#' that data is not available. This function will not be called directly by the user. It is called by
+#' fars_summarize_years.
 #'
 #' @source  US National Highway Traffic Safety Administration's Fatality Analysis Reporting System
 #'
-#' @param years is a numerical vector, or a vector that can be coerced to numerical, of years
+#' @inheritParams fars_summarize_years
 #'
 #' @importFrom dplyr mutate select
 #'
 #' @details An error will be generated if a year is given and no data is available for that year. This
-#' allows the used to be aware of the years when data is available to this package.
+#' allows the user to be aware of the years when data is available to this package.
 #'
 #' @return This function returns a list. Each element of the list contains the months and year that data is available.
 #' If a year is not available an error is returned.
-#'
-#' @examples
-#' \dontrun{fars_read_years(2013)
-#' fars_read_years(c(2013,2014))
-#' fars_read_years(c(2013,2014,2015))}
 
 
 fars_read_years <- function(years) {
@@ -93,14 +89,15 @@ fars_read_years <- function(years) {
         })
 }
 
-#' Summarizes the number of traffic accidents per month per year.
+#' Table of traffic accidents per month per year.
 #'
 #' This function summarizes the number of traffic accidents for the requested years accross all states.
 #' The data is presented in a tabular form.
 #'
 #' @source  US National Highway Traffic Safety Administration's Fatality Analysis Reporting System
 #'
-#' @param years is a numerical vector of years, or a vector that can be coerced into a numerical vector.
+#' @param years a numerical vector of years, or a vector that can be coerced into a numerical vector. The years
+#'      when data are available include 2013, 2014, and 2015.
 #'
 #' @importFrom dplyr bind_rows group_by summarize
 #'
@@ -108,8 +105,11 @@ fars_read_years <- function(years) {
 #'
 #' @return The function returns a tbl_df, tbl, data.frame class that summarizes the number of accidents that have occured across all states in any given year.
 #'
-#' @export
+#' @examples
+#'  \dontrun{DTA<-fars_summarize_years(c(2013, 2014))}
 #'
+#' @export
+
 fars_summarize_years <- function(years) {
         dat_list <- fars_read_years(years)
         dplyr::bind_rows(dat_list) %>%
@@ -118,16 +118,19 @@ fars_summarize_years <- function(years) {
                 tidyr::spread(year, n)
 }
 
-#'Creates a picture of a state and where an auto accident occurred
+#'Map of state specific accidents
 #'
 #'This function takes two inputs which are used to extract traffic fatality information
-#'for a given state and year and then draws a map showing the regions for the fatalities.
+#'for a given state and year. This information is used to place markers, indicated as points on a
+#' map, showing where a traffic fatality occured. If there were no fatalities in a state during a given
+#' year the function will generate an error stating there is no accident to plot. If you input an incorrect
+#' state number then an error will indicate there is no state for the given number.
 #'
 #' @source  US National Highway Traffic Safety Administration's Fatality Analysis Reporting System
 #'
-#' @param state.num a number between 1 adn 51, excluding 3, that identifies a US state.
+#' @param state.num a number between 1 and 51, excluding 3, that identifies a US state.
 #'
-#' @param year An integer or an object that can be coerced to an integer.
+#' @param year An integer or an object that can be coerced to an integer. Should be 2013, 2014, or 2015.
 #'
 #' @importFrom dplyr filter
 #' @importFrom maps map

@@ -2,7 +2,7 @@
 % Please edit documentation in R/farsfunctions.R
 \name{fars_summarize_years}
 \alias{fars_summarize_years}
-\title{Summarizes the number of traffic accidents per month per year.}
+\title{Table of traffic accidents per month per year.}
 \source{
 US National Highway Traffic Safety Administration's Fatality Analysis Reporting System
 }
@@ -10,7 +10,8 @@ US National Highway Traffic Safety Administration's Fatality Analysis Reporting 
 fars_summarize_years(years)
 }
 \arguments{
-\item{years}{is a numerical vector of years, or a vector that can be coerced into a numerical vector.}
+\item{years}{a numerical vector of years, or a vector that can be coerced into a numerical vector. The years
+when data are available include 2013, 2014, and 2015.}
 }
 \value{
 The function returns a tbl_df, tbl, data.frame class that summarizes the number of accidents that have occured across all states in any given year.
@@ -18,4 +19,8 @@ The function returns a tbl_df, tbl, data.frame class that summarizes the number 
 \description{
 This function summarizes the number of traffic accidents for the requested years accross all states.
 The data is presented in a tabular form.
+}
+\examples{
+ \dontrun{DTA<-fars_summarize_years(c(2013, 2014))}
+
 }

@@ -14,63 +14,25 @@ knitr::opts_chunk$set(
 )
 ```
 
-The package fars requires the following packages to operate.
-
-```{r packages}
-
-#library(dplyr)
-#library(maps)
-#library(tidyr)
-#library(fars)
-
-```
-
 ## Traffic Fatality Analysis
 
+Usage of this package requires the user to download data from [fars_data.zip](https://d18ky98rnyall9.cloudfront.net/_e1adac2a5f05192dc8780f3944feec13_fars_data.zip?Expires=1499385600&Signature=ITQ5sWjdExbe52CekvVQtKxflkNZKMOovaLIZ2AzhPNLULBD5Pula~0WN3r70v3sPNi5iq7GeuneYiQWH-Zv7KQjm9cRpzvNw2EXtl5tvosxUojVXBbpYqT8SlvcB9aSERaYDhKS1B74geu2Gr3ia8d27rHM52lHZbv7lSsMowQ_&Key-Pair-Id=APKAJLTNE6QMUY6HBC5A). This data contains traffic fatality information for the years 2013 - 2015. The data should be unzipped and placed in the working directory of your computer.
 
-The path to data files that can be used in these functions can be created using 
+###fars_summarize_years
 
-system.file("extdata", "filename", package="fars"), where filename is one of "accident_2013.csv.bz2", "accident_2014.csv.bz2", or "accident_2015.csv.bz2"
+This function takes a vector of integers as an argument. The integers are years representing years when traffic fatility data is available, which currently includes 2013 - 2015. The traffic fatality data is then summarized and a table is constructed showing the number of fatalities by month across all states.
 
-Traffic fatalities are recorded by the US National Highway Traffic Safety Administration's Fatality Analysis Reporting System (NHTSA). This package extracts data for the years 2013, 2014, and 2015. The fatalities can be summarized in one of two ways, a table for each month of each year or in a map of a specific state.
-
-The function fars_summarize_years uses the traffic fatality data set and summarizes the data in that set.
-
-```{r summarise}
-#fars_summarize_years <- function(years) {
-#        dat_list <- fars_read_years(years)
-#        dplyr::bind_rows(dat_list) %>% 
-#                dplyr::group_by(year, MONTH) %>% 
-#                dplyr::summarize(n = n()) %>%
-#                tidyr::spread(year, n)
-#}
-#kable(fars_summarize_years(c(2013,2014)))
+```{r table}
+#DF<-fars_summarize_years(c(2013,2014))
+#kable(DF)
 ```
 
-Thu function fars_map_state() uses the data from the NSTSA and plots a year's traffic fatalities in a map of the state where the fatalities occured, if there were traffic fatalities in that state for that year.
+###fars_map_state
+
+This function is very different. There are two arguments to this function state.num, a number between 1 and 51, excluding 3. The second input is a year. This time year is singular, so would be 2013, 2014, or 2015.
+
+The output of this function is a map of the chosen state and the locations of each fatality is represented as a dot on the map.
 
 ```{r map}
-#fars_map_state <- function(state.num, year) {
-#        filename <- make_filename(year)
-#        data <- fars_read(filename)
-#        state.num <- as.integer(state.num)
-#
-#        if(!(state.num %in% unique(data$STATE)))
-#                stop("invalid STATE number: ", state.num)
-#        data.sub <- dplyr::filter(data, STATE == state.num)
-#        if(nrow(data.sub) == 0L) {
-#                message("no accidents to plot")
-#                return(invisible(NULL))
-#        }
-#        is.na(data.sub$LONGITUD) <- data.sub$LONGITUD > 900
-#        is.na(data.sub$LATITUDE) <- data.sub$LATITUDE > 90
-#        with(data.sub, {
-#                maps::map("state", ylim = range(LATITUDE, na.rm = TRUE),
-#                          xlim = range(LONGITUD, na.rm = TRUE))
-#                graphics::points(LONGITUD, LATITUDE, pch = 46)
-#        })
-#}
-
-#fars_map_state(16, 2013)
-#fars_map_state(13,2015)
+#fars_map_state(16, 2014)
 ```
